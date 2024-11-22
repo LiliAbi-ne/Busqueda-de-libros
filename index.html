@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Libros</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', 'Arial', sans-serif;
+      background-color: #eafaf1;
+      color: #355e3b;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+      text-align: center;
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border: 2px solid #cce7d0;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      color: #2d8659;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .tree-container {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .tree-node {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: #d0f5d4;
+      border: 2px solid #98e09e;
+      text-align: center;
+      width: 150px;
+    }
+
+    .tree-structure {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .tree-level {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🌳 Catálogo de Libros</h1>
+    </header>
+    <div>
+      <input id="isbnInput" type="text" placeholder="Ingrese ISBN" />
+      <button onclick="addBook()">Agregar</button>
+      <button onclick="deleteBook()">Eliminar</button>
+    </div>
+    <div class="tree-container">
+      <h2>Árbol de Libros</h2>
+      <div id="treeContainer" class="tree-structure"></div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
