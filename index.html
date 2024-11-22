@@ -23,6 +23,7 @@
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       border: 2px solid #cce7d0;
+
     }
 
     header h1 {
@@ -44,13 +45,7 @@
       background-color: #d0f5d4;
       border: 2px solid #98e09e;
       text-align: center;
-      width: 800px;
-    }
-
-    .tree-level {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
+      width: 750px;
     }
 
     button {
@@ -66,6 +61,18 @@
 
     button:hover {
       background-color: #45a049;
+    }
+
+    .pagination {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .pagination button.active {
+      background-color: #2d8659;
+      color: white;
     }
   </style>
 </head>
@@ -83,6 +90,7 @@
     <div class="tree-container">
       <h2>Árbol de Libros</h2>
       <div id="treeContainer"></div>
+      <div id="paginationControls" class="pagination"></div>
     </div>
   </div>
   <script src="script.js"></script>

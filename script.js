@@ -8,9 +8,10 @@ class TreeNode {
   }
 }
 
-let root = null;
+let root = null; // Nodo raíz
+let allNodes = []; // Lista de todos los nodos en orden ascendente (para paginación)
 
-// Función para obtener información del libro desde la API
+// Función para obtener datos de libros usando la API
 async function fetchBookData(isbn) {
   try {
     const response = await fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);
@@ -30,7 +31,7 @@ async function fetchBookData(isbn) {
   }
 }
 
-// Función para insertar un nodo en el árbol
+// Insertar nodo en el árbol binario
 function insertNode(root, newNode) {
   if (!root) {
     return newNode;
@@ -43,7 +44,7 @@ function insertNode(root, newNode) {
   return root;
 }
 
-// Función para añadir un libro
+// Función para añadir un nodo al árbol
 async function addBook() {
   const isbn = document.getElementById("isbnInput").value.trim();
   if (!isbn) {
@@ -55,29 +56,70 @@ async function addBook() {
   if (bookData) {
     const newNode = new TreeNode(bookData.isbn, bookData.title, bookData.author);
     root = insertNode(root, newNode);
-    renderTree();
+    allNodes = [];
+    inOrderTraversal(root, allNodes);
+    renderPagination(1);
   }
 }
 
-// Función para eliminar un nodo del árbol
-function deleteNode(root, isbn) {
-  if (!root) {
-    return null;
+// Recorrido in-order para ordenar los nodos
+function inOrderTraversal(node, nodes) {
+  if (!node) return;
+  inOrderTraversal(node.left, nodes);
+  nodes.push(node);
+  inOrderTraversal(node.right, nodes);
+}
+
+// Función para renderizar la paginación
+function renderPagination(pageNumber) {
+  const itemsPerPage = 5;
+  const startIndex = (pageNumber - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const nodesToDisplay = allNodes.slice(startIndex, endIndex);
+
+  const treeContainer = document.getElementById("treeContainer");
+  treeContainer.innerHTML = ""; // Limpiar contenedor
+
+  nodesToDisplay.forEach((node) => {
+    const nodeDiv = document.createElement("div");
+    nodeDiv.className = "tree-node";
+    nodeDiv.innerHTML = `
+      <p><strong>ISBN:</strong> ${node.isbn}</p>
+      <p><strong>Autor:</strong> ${node.author}</p>
+      <p><strong>Título:</strong> ${node.title}</p>
+    `;
+    treeContainer.appendChild(nodeDiv);
+  });
+
+  renderPaginationControls(pageNumber, Math.ceil(allNodes.length / itemsPerPage));
+}
+
+// Renderizar controles de paginación
+function renderPaginationControls(currentPage, totalPages) {
+  const paginationControls = document.getElementById("paginationControls");
+  paginationControls.innerHTML = ""; // Limpiar controles
+
+  for (let i = 1; i <= totalPages; i++) {
+    const button = document.createElement("button");
+    button.innerText = i;
+    button.className = i === currentPage ? "active" : "";
+    button.onclick = () => renderPagination(i);
+    paginationControls.appendChild(button);
   }
+}
+
+// Función para eliminar un nodo
+function deleteNode(root, isbn) {
+  if (!root) return null;
   if (isbn < root.isbn) {
     root.left = deleteNode(root.left, isbn);
   } else if (isbn > root.isbn) {
     root.right = deleteNode(root.right, isbn);
   } else {
-    if (!root.left && !root.right) {
-      return null;
-    }
-    if (!root.left) {
-      return root.right;
-    }
-    if (!root.right) {
-      return root.left;
-    }
+    if (!root.left && !root.right) return null;
+    if (!root.left) return root.right;
+    if (!root.right) return root.left;
+
     let minRight = root.right;
     while (minRight.left) {
       minRight = minRight.left;
@@ -98,44 +140,7 @@ function deleteBook() {
     return;
   }
   root = deleteNode(root, isbn);
-  renderTree();
-}
-
-// Función para recorrer el árbol y obtener los niveles
-function getTreeLevels(node, depth = 0, levels = []) {
-  if (!node) return levels;
-
-  if (!levels[depth]) levels[depth] = [];
-  levels[depth].push(node);
-
-  getTreeLevels(node.left, depth + 1, levels);
-  getTreeLevels(node.right, depth + 1, levels);
-
-  return levels;
-}
-
-// Función para renderizar el árbol visualmente
-function renderTree() {
-  const treeContainer = document.getElementById("treeContainer");
-  treeContainer.innerHTML = "";
-
-  const levels = getTreeLevels(root);
-
-  levels.forEach((levelNodes) => {
-    const levelDiv = document.createElement("div");
-    levelDiv.className = "tree-level";
-
-    levelNodes.forEach((node) => {
-      const nodeDiv = document.createElement("div");
-      nodeDiv.className = "tree-node";
-      nodeDiv.innerHTML = `
-        <p><strong>ISBN:</strong> ${node.isbn}</p>
-        <p><strong>Autor:</strong> ${node.author}</p>
-        <p><strong>Título:</strong> ${node.title}</p>
-      `;
-      levelDiv.appendChild(nodeDiv);
-    });
-
-    treeContainer.appendChild(levelDiv);
-  });
+  allNodes = [];
+  inOrderTraversal(root, allNodes);
+  renderPagination(1);
 }
