@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +15,7 @@
     }
 
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 2rem auto;
       padding: 1rem;
       text-align: center;
@@ -35,6 +36,12 @@
       text-align: center;
     }
 
+    .tree-level {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
     .tree-node {
       display: inline-block;
       margin: 10px;
@@ -44,13 +51,6 @@
       border: 2px solid #98e09e;
       text-align: center;
       width: 150px;
-    }
-
-    .tree-structure {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
     }
 
     button {
@@ -67,14 +67,9 @@
     button:hover {
       background-color: #45a049;
     }
-
-    .tree-level {
-      display: flex;
-      justify-content: center;
-      margin-top: 10px;
-    }
   </style>
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -87,9 +82,10 @@
     </div>
     <div class="tree-container">
       <h2>Árbol de Libros</h2>
-      <div id="treeContainer" class="tree-structure"></div>
+      <div id="treeContainer"></div>
     </div>
   </div>
   <script src="script.js"></script>
 </body>
+
 </html>
